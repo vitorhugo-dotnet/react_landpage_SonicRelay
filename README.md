@@ -30,11 +30,39 @@ npm run dev
 | Script | Purpose |
 | --- | --- |
 | `npm run dev` | Vite dev server with fast refresh. |
-| `npm run build` | Type-check the project references, then build to `dist/`. |
+| `npm run build` | Type-check the project references, then build to `dist/` (including the `404.html` fallback). |
 | `npm run preview` | Serve the production build locally. |
 | `npm run lint` | ESLint over the whole project. |
 | `npm run typecheck` | `tsc -b` with no emit. |
 | `npm test` | Vitest run (jsdom + Testing Library). |
+
+## Deployment
+
+The site deploys to **GitHub Pages using the GitHub Actions source** — not a
+branch or `/docs` folder. `.github/workflows/deploy-pages.yml` lints,
+type-checks, tests and builds on every push to `main`, uploads `dist/` as a
+Pages artifact and publishes it.
+
+One-time setup: **Settings → Pages → Build and deployment → Source: GitHub
+Actions**.
+
+Two details make a static host behave:
+
+- **Base path.** A project site is served from `/<repo>/`, so asset URLs need
+  that prefix. `actions/configure-pages` reports it and the workflow passes it
+  to Vite as `VITE_BASE`; `vite.config.ts` normalises it and falls back to `/`
+  locally. Moving to a custom domain needs no code change — the same output
+  becomes empty and the base returns to `/`.
+- **404 fallback.** The build writes `dist/404.html` as a copy of
+  `index.html`, so GitHub Pages serves the app for any unknown path instead of
+  its default error page. Deep links and stale URLs land on the site rather
+  than a 404.
+
+Build against a subpath locally with:
+
+```bash
+VITE_BASE=/react_landpage_SonicRelay npm run build && npm run preview
+```
 
 ## Architecture
 
