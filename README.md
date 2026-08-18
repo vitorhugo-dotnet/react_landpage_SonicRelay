@@ -43,8 +43,10 @@ branch or `/docs` folder. `.github/workflows/deploy-pages.yml` lints,
 type-checks, tests and builds on every push to `main`, uploads `dist/` as a
 Pages artifact and publishes it.
 
-One-time setup: **Settings → Pages → Build and deployment → Source: GitHub
-Actions**.
+The workflow passes `enablement: true` to `actions/configure-pages`, so the
+first run creates the Pages site and points it at this workflow — no manual
+setting needed. If that call is ever refused, enable it by hand under
+**Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
 Two details make a static host behave:
 

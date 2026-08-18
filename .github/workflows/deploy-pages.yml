@@ -41,6 +41,10 @@ jobs:
       - name: Configure Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          # Create the Pages site on the first run and point it at this
+          # workflow, so deploying needs no manual repository setting.
+          enablement: true
 
       - name: Build
         # base_path is "/<repo>" for a project site and "" for a user or custom
