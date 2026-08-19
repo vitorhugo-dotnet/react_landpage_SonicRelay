@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import App from '@/App'
 import '@/index.css'
 
@@ -9,8 +9,19 @@ if (!container) {
   throw new Error('Root element #root was not found in index.html')
 }
 
-createRoot(container).render(
+const tree = (
   <StrictMode>
     <App />
-  </StrictMode>,
+  </StrictMode>
 )
+
+/**
+ * Production builds ship the page already rendered (see src/entry-server.tsx),
+ * so the client adopts that markup instead of throwing it away. `npm run dev`
+ * serves an empty root and falls back to a plain client render.
+ */
+if (container.firstElementChild) {
+  hydrateRoot(container, tree)
+} else {
+  createRoot(container).render(tree)
+}

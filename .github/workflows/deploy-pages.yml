@@ -48,9 +48,13 @@ jobs:
 
       - name: Build
         # base_path is "/<repo>" for a project site and "" for a user or custom
-        # domain site; vite.config.ts normalises both.
+        # domain site; vite.config.ts normalises both. base_url is the full
+        # address Pages will answer on, which is what the canonical tag, the
+        # Open Graph URLs, robots.txt and the sitemap have to agree on — so a
+        # custom domain needs nothing but the repository setting.
         env:
           VITE_BASE: ${{ steps.pages.outputs.base_path }}
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3

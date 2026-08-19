@@ -1,4 +1,4 @@
-import type { IconName } from '@/components/ui/Icon'
+import type { IconName } from '@/components/ui/icon-paths'
 
 /**
  * Contracts every content module is written against. Section components depend

@@ -141,3 +141,6 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Server bundle produced for the prerender step; deleted at the end of the build.
+.prerender

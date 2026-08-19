@@ -1,4 +1,4 @@
-import type { RetentionRow, SecurityControl } from './types'
+import type { RetentionRow, SecurityControl } from './types.ts'
 
 export const securityControls: readonly SecurityControl[] = [
   {

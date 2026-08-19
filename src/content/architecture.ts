@@ -1,4 +1,4 @@
-import type { ArchitectureNode } from './types'
+import type { ArchitectureNode } from './types.ts'
 
 export const architectureNodes: readonly ArchitectureNode[] = [
   {
