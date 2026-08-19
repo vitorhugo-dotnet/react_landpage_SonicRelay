@@ -2,6 +2,7 @@ import { SkipLink } from '@/components/layout/SkipLink'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { Hero } from '@/components/sections/Hero'
+import { Downloads } from '@/components/sections/Downloads'
 import { HowItWorks } from '@/components/sections/HowItWorks'
 import { Features } from '@/components/sections/Features'
 import { Architecture } from '@/components/sections/Architecture'
@@ -21,6 +22,7 @@ export default function App() {
       <SiteHeader />
       <main id="main">
         <Hero />
+        <Downloads />
         <HowItWorks />
         <Features />
         <Architecture />

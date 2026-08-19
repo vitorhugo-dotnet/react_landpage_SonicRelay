@@ -75,3 +75,20 @@ export interface FaqItem {
   readonly question: string
   readonly answer: string
 }
+
+export type StoreId = 'play' | 'fdroid' | 'microsoft'
+
+export interface StoreLink {
+  readonly id: StoreId
+  /** Small uppercase line above the store name, e.g. "Get it on". */
+  readonly eyebrow: string
+  readonly name: string
+  /** Which SonicRelay app the store ships. */
+  readonly target: string
+  /**
+   * Omitted while the listing is not live yet. Presence of a URL is the only
+   * thing that turns the badge from "coming soon" into a real link, so
+   * publishing a store is a content-only change.
+   */
+  readonly href?: string
+}

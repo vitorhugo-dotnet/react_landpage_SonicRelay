@@ -26,6 +26,7 @@ export const site = {
 } as const
 
 export const navigation: readonly NavLink[] = [
+  { label: 'Downloads', href: '#downloads' },
   { label: 'How it works', href: '#how-it-works' },
   { label: 'Features', href: '#features' },
   { label: 'Architecture', href: '#architecture' },
