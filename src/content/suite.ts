@@ -1,5 +1,5 @@
-import { site } from './site'
-import type { SuiteProject } from './types'
+import { site } from './site.ts'
+import type { SuiteProject } from './types.ts'
 
 export const suiteProjects: readonly SuiteProject[] = [
   {

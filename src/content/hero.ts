@@ -1,5 +1,5 @@
-import { site } from './site'
-import type { HeroContent } from './types'
+import { site } from './site.ts'
+import type { HeroContent } from './types.ts'
 
 export const hero: HeroContent = {
   eyebrow: 'Open-source audio relay',

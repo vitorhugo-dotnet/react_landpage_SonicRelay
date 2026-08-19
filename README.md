@@ -30,7 +30,8 @@ npm run dev
 | Script | Purpose |
 | --- | --- |
 | `npm run dev` | Vite dev server with fast refresh. |
-| `npm run build` | Type-check the project references, then build to `dist/` (including the `404.html` fallback). |
+| `npm run build` | Type-check, prerender, then build to `dist/` (including the `404.html` fallback). |
+| `npm run build:server` | Compile `src/entry-server.tsx` for Node — the first half of the prerender step, run for you by `npm run build`. |
 | `npm run preview` | Serve the production build locally. |
 | `npm run lint` | ESLint over the whole project. |
 | `npm run typecheck` | `tsc -b` with no emit. |
@@ -48,7 +49,7 @@ first run creates the Pages site and points it at this workflow — no manual
 setting needed. If that call is ever refused, enable it by hand under
 **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
-Two details make a static host behave:
+Three details make a static host behave:
 
 - **Base path.** A project site is served from `/<repo>/`, so asset URLs need
   that prefix. `actions/configure-pages` reports it and the workflow passes it
@@ -59,6 +60,11 @@ Two details make a static host behave:
   `index.html`, so GitHub Pages serves the app for any unknown path instead of
   its default error page. Deep links and stale URLs land on the site rather
   than a 404.
+- **Canonical URL.** `actions/configure-pages` also reports the full address
+  the site will answer on, and the workflow passes it as `SITE_URL`. The
+  canonical link, the Open Graph URLs, `robots.txt` and `sitemap.xml` are all
+  built from it, so moving to a custom domain changes no code here either.
+  Local builds fall back to the published Pages address.
 
 Build against a subpath locally with:
 
@@ -81,7 +87,12 @@ src/
 │   └── sections/  One component per page section
 ├── hooks/         useScrollSpy
 ├── lib/           cn class-name helper
+├── entry-server   Build-time render entry (prerendering)
 └── index.css      Tailwind v4 theme tokens
+
+vite/
+├── seo.ts         Head tags, JSON-LD, robots.txt, sitemap.xml
+└── prerender.ts   Bakes the rendered page into dist/index.html
 ```
 
 Four conventions keep it that way:
@@ -96,6 +107,58 @@ Four conventions keep it that way:
   block in `index.css`, so re-skinning the site is a one-file change.
 - **No speculative abstraction.** There is no router, theme switcher or i18n
   layer, because the site has one route, one theme and one language today.
+
+## Search engines
+
+A client-rendered page that ships an empty `<div id="root">` is the single
+biggest thing standing between a landing page and its index entry. Four
+mechanisms remove it, all driven from **`src/content/seo.ts`** — the one place
+title, description, social image and canonical URL are written down.
+
+- **Prerendering.** `npm run build` renders the page once in Node
+  (`src/entry-server.tsx`) and bakes the markup into `dist/index.html`, so a
+  crawler that runs no JavaScript still reads the whole page — and the first
+  paint no longer waits on a 230 kB bundle. The browser hydrates that markup
+  instead of throwing it away.
+- **Head tags.** `vite/seo.ts` generates the title, description, canonical
+  link, `robots` directives, Open Graph and Twitter cards, and the icon links,
+  substituting them for the `<!--seo-->` marker in `index.html`. Social image
+  URLs are absolute, which is the form scrapers require.
+- **Rich results.** One JSON-LD `@graph` describes the page as `WebSite`,
+  `WebPage`, `SoftwareApplication` (free, MIT, Windows + Android), `Person` and
+  `FAQPage`. The FAQ entries are generated from `src/content/faq.ts`, so the
+  structured data cannot drift from what the page actually says. Validate with
+  the [Rich Results Test](https://search.google.com/test/rich-results).
+- **robots.txt and sitemap.xml.** Emitted into `dist/` at build time with
+  absolute URLs derived from `SITE_URL`, which the deploy workflow fills in
+  from the address GitHub Pages reports.
+
+> **One caveat on a project site.** Crawlers only read `robots.txt` from the
+> *domain* root, so on `https://<owner>.github.io/<repo>/` the file this build
+> emits is not the one Google obeys — that one belongs to the
+> `<owner>.github.io` repository. Nothing is blocked either way, but the
+> `Sitemap:` line will not be picked up automatically: submit
+> `https://<owner>.github.io/<repo>/sitemap.xml` in Google Search Console (and
+> Bing Webmaster Tools) instead. A custom domain makes the emitted file the
+> real one.
+
+The social card (`public/og-cover.png`, 1200×630) and the PWA icons are static
+assets in `public/`; regenerate them by hand if the branding changes.
+
+## Progressive web app
+
+`vite-plugin-pwa` generates `manifest.webmanifest` and a Workbox service worker
+that precaches the app shell and caches Google Fonts at runtime. The manifest
+is built from the same content module as the meta tags, so the installed app
+and the search result describe the product identically.
+
+Being installable is not itself a ranking signal. What helps is the second
+visit painting from the precache instead of the network, since Core Web Vitals
+are a ranking input — and the app icons and `theme_color` are the same ones the
+social card and the browser tab use.
+
+The service worker is only generated for production builds; `npm run dev`
+serves the page without one.
 
 ## Accessibility
 

@@ -1,4 +1,4 @@
-import type { StoreLink } from './types'
+import type { StoreLink } from './types.ts'
 
 /**
  * Store listings. None are published yet, so no entry carries an `href` and

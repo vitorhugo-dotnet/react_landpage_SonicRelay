@@ -1,4 +1,4 @@
-import type { Feature } from './types'
+import type { Feature } from './types.ts'
 
 export const features: readonly Feature[] = [
   {
