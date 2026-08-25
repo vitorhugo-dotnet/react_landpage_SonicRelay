@@ -20,7 +20,16 @@ describe('Downloads', () => {
     render(<Downloads />)
 
     expect(screen.getAllByText('Coming soon')).toHaveLength(storeLinks.length)
-    // The only links in the section are the two repository buttons.
-    expect(screen.getAllByRole('link')).toHaveLength(2)
+    // The only links in the section are the web app and two repository buttons.
+    expect(screen.getAllByRole('link')).toHaveLength(3)
+  })
+
+  it('links to the SonicRelay web app', () => {
+    render(<Downloads />)
+
+    expect(screen.getByRole('link', { name: /Open Web App/i })).toHaveAttribute(
+      'href',
+      'https://sonicrelay.hugodotnet.dev',
+    )
   })
 })

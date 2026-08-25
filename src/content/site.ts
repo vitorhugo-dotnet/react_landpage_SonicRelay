@@ -6,6 +6,7 @@ const repositoryUrl = (name: string) => `https://github.com/${REPOSITORY_OWNER}/
 
 export const site = {
   name: 'SonicRelay',
+  webApp: 'https://sonicrelay.hugodotnet.dev',
   tagline: 'Low-latency audio streaming from your PC to your phone.',
   description:
     'SonicRelay streams your Windows system audio to your phone over WebRTC. The backend only handles identity, pairing and signaling — the sound never passes through it.',

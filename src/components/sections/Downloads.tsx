@@ -32,6 +32,10 @@ export function Downloads() {
           <p className="mt-7 text-sm text-ink-500">{downloads.note}</p>
 
           <div className="mt-5 flex flex-wrap gap-3">
+            <LinkButton href={site.webApp} external>
+              <Icon name="link" className="h-4 w-4" />
+              Open Web App
+            </LinkButton>
             <LinkButton href={site.repositories.desktop} external variant="secondary">
               <Icon name="desktop" className="h-4 w-4" />
               Windows publisher
