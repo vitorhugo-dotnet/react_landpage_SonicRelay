@@ -16,12 +16,21 @@ describe('Downloads', () => {
     expect(storeLinks.map((link) => link.id)).toEqual(['play', 'fdroid', 'microsoft'])
   })
 
-  it('marks every store as coming soon while none is published', () => {
+  it('links the Google Play listing', () => {
     render(<Downloads />)
 
-    expect(screen.getAllByText('Coming soon')).toHaveLength(storeLinks.length)
-    // The only links in the section are the web app and two repository buttons.
-    expect(screen.getAllByRole('link')).toHaveLength(3)
+    expect(screen.getByRole('link', { name: /Google Play/i })).toHaveAttribute(
+      'href',
+      'https://play.google.com/store/apps/details?id=com.vitorhugo.sonicrelay.sonic_relay&pli=1',
+    )
+  })
+
+  it('marks unpublished stores as coming soon', () => {
+    render(<Downloads />)
+
+    expect(screen.getAllByText('Coming soon')).toHaveLength(
+      storeLinks.filter((link) => !link.href).length,
+    )
   })
 
   it('links to the SonicRelay web app', () => {
