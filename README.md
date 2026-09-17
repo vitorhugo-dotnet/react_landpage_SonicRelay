@@ -1,22 +1,22 @@
 # react_landpage_SonicRelay
 
-Marketing landing page for **SonicRelay**, the open-source suite that streams
-Windows system audio to a paired phone over WebRTC. Built with React 19,
+Marketing landing page for **SonicRelay**, the open-source product that streams
+system audio to paired mobile viewers over WebRTC. Built with React 19,
 TypeScript, Vite and Tailwind CSS v4, and deployed as a static site.
 
-The page explains what the product does, how the four-step flow works
+The page explains what SonicRelay does, how the four-step flow works
 (pair → join → stream → monitor), what the architecture is, and what the
-backend actually stores — all sourced from the API repository's own
-documentation.
+shared RelayControl backend actually stores.
 
 ## Project suite
 
 | Project | Repository | Stack | Responsibility |
 | --- | --- | --- | --- |
-| Backend API | [dotnet_SonicRelay](https://github.com/vitorhugo-dotnet/dotnet_SonicRelay) | .NET 10, ASP.NET Core, PostgreSQL, Redis | Device identity, pairing, sessions, join codes and signaling. |
-| Mobile Viewer | [flutter_SonicRelay](https://github.com/vitorhugo-dotnet/flutter_SonicRelay) | Flutter, `flutter_webrtc` | Join a session and play WebRTC audio. |
-| Windows Publisher | [windows_SonicRelay](https://github.com/vitorhugo-dotnet/windows_SonicRelay) | C#/.NET Desktop, WASAPI, WebRTC | Capture system audio and publish it to viewers. |
-| Landing Page | [react_landpage_SonicRelay](https://github.com/vitorhugo-dotnet/react_landpage_SonicRelay) | React, TypeScript, Vite, Tailwind CSS | Public marketing site for the suite. |
+| RelayControl | [dotnet_SonicRelay](https://github.com/vitorhugo-dotnet/dotnet_SonicRelay) | .NET 10, ASP.NET Core, PostgreSQL, Redis | Shared device identity, pairing, sessions, authorization, join codes and signaling control plane. |
+| SonicRelay Mobile Viewer | [flutter_mobile-web_SonicRelay](https://github.com/vitorhugo-dotnet/flutter_mobile-web_SonicRelay) | Flutter, `flutter_webrtc` | Join SonicRelay sessions and play WebRTC audio. |
+| SonicRelay Desktop Publisher | [desktop_dotnet_SonicRelay](https://github.com/vitorhugo-dotnet/desktop_dotnet_SonicRelay) | C#/.NET, Avalonia, system-audio capture, WebRTC | Capture system audio and publish it to viewers. |
+| FrameRelay | [dotnet_SonicDesktopRelay](https://github.com/vitorhugo-dotnet/dotnet_SonicDesktopRelay) | C#/.NET, Avalonia, Windows Graphics Capture, FFmpeg, WebRTC | Separate screen-sharing product powered by RelayControl. |
+| SonicRelay Landing Page | [react_landpage_SonicRelay](https://github.com/vitorhugo-dotnet/react_landpage_SonicRelay) | React, TypeScript, Vite, Tailwind CSS | Public marketing site for SonicRelay. |
 
 ## Quick start
 
